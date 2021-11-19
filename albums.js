@@ -7,7 +7,6 @@ const baseURL = "https://api.spotify.com/v1";
 // -------------------------------------------
 // ----------------- ALBUMS ------------------
 // -------------------------------------------
-
 export function getAlbum(albumID, auth) {
   return new Promise(function(resolve, reject) {
     axios.get(baseURL + '/albums/' + albumID, auth).then(res => {
@@ -20,7 +19,7 @@ export function getAlbum(albumID, auth) {
 
 export function getSeveralAlbums(albumIDs, auth) {
   return new Promise(function(resolve, reject) {
-    axios.get(baseURL + '/albums?ids='+albumIDs, auth).then(res => {
+    axios.get(baseURL + '/albums?ids=' + albumIDs, auth).then(res => {
       resolve(res);
     }).catch(error => {
       reject(error ? error : "Cannot get multiple album information");
@@ -38,7 +37,7 @@ export function getAlbumTracks(albumID, auth) {
   });
 }
 
-export function getSavedAlbums(auth) {
+export function getSavedAlbums(auth) { // TODO -> test with scope
   return new Promise(function(resolve, reject) {
     axios.get(baseURL + '/me/albums', auth).then(res => {
       resolve(res);
@@ -47,6 +46,41 @@ export function getSavedAlbums(auth) {
     });
   });
 }
+
+export function saveAlbum(albumIDs, auth) { // TODO -> test with scope
+  return new Promise(function(resolve, reject) {
+    axios.put(baseURL + '/me/albums', auth, {
+      "ids": albumIDs
+    }).then(res => {
+      resolve(res);
+    }).catch(error => {
+      reject(error ? error : "Cannot get your saved albums");
+    });
+  });
+}
+
+export function savedAlbumsContains(albumIDs, auth) { // TODO -> test with scope
+  return new Promise(function(resolve, reject) {
+    axios.get(baseURL + '/me/albums/contains?ids=' + albumIDs, auth).then(res => {
+      resolve(res);
+    }).catch(error => {
+      reject(error ? error : "Cannot get your saved albums");
+    });
+  });
+}
+
+export function getNewReleases(auth) {
+  return new Promise(function(resolve, reject) {
+    axios.get(baseURL + '/browse/new-releases', auth).then(res => {
+      resolve(res);
+    }).catch(error => {
+      reject(error ? error : "Cannot get your saved albums");
+    });
+  });
+}
+
+// TODO -> delete album
+
 
 // -------------------------------------------
 // ----------------- ALBUMS ------------------
